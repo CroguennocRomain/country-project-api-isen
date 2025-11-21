@@ -1,93 +1,215 @@
-# country-project-api-isen
+# Countries API — ISEN M2 Software Engineering
 
+**Full-Stack Application with React Frontend**
 
+This repository contains a complete Countries Management API with a React frontend, featuring JWT authentication and CRUD operations.
 
-## Getting started
+## **Project Overview**
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+This application consists of:
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+* **Backend API** - RESTful API for managing countries built with Node.js, Express, and Sequelize
+* **React Frontend** - Modern React application with JWT authentication
+* **MySQL Database** - Persistent storage using Sequelize ORM
 
-## Add your files
+## **Features**
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+### Backend (API)
+* RESTful API for country management (CRUD operations)
+* JWT-based authentication
+* Sequelize ORM with MySQL
+* Input validation and error handling
+* CORS enabled for frontend integration
+
+### Frontend (React)
+* Secure JWT login system
+* Country management dashboard with tabs:
+  - **All Countries** - View all countries in a grid
+  - **Statistics** - View statistics about countries (total, by continent, population)
+  - **Top Countries** - View top countries by population
+  - **Recent** - View recently added countries
+  - **By Continent** - Browse countries by continent
+  - **Search** - Search countries by name
+  - **Add Country** - Create new countries
+  - **Country Details** - View and edit country information
+* Error handling for unavailable resources
+* Responsive design
+* Modern UI with beautiful styling
+
+## **Technologies**
+
+### Backend
+* Node.js
+* Express.js
+* Sequelize ORM
+* MySQL
+* JWT (jsonwebtoken)
+* bcrypt for password hashing
+* CORS for cross-origin requests
+
+### Frontend
+* React 18
+* React Router DOM 6
+* Axios for API calls
+* CSS3
+
+## **Getting Started**
+
+### Prerequisites
+
+* Node.js (v14 or higher)
+* MySQL database
+* npm or yarn
+
+### Database Setup
+
+1. Create a MySQL database named `countries_db`
+2. Update database credentials in `src/db/sequelize.js` if needed:
+   - Default: username: `root`, password: `azerty`
+
+### Backend Setup
+
+1. Install dependencies:
+```bash
+npm install
+```
+
+2. Start the backend server:
+```bash
+npm start
+```
+
+The API will run on `http://localhost:3000`
+
+### Frontend Setup
+
+1. Navigate to the frontend directory:
+```bash
+cd frontend
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start the frontend development server:
+```bash
+npm start
+```
+
+The frontend will open in your browser (usually at `http://localhost:3001` if port 3000 is taken by the API)
+
+## **Default Login Credentials**
+
+* **Username:** teiva
+* **Password:** azerty
+
+## **API Endpoints**
+
+All endpoints except `/api/login` require a JWT token in the Authorization header:
+```
+Authorization: Bearer <token>
+```
+
+### Authentication
+* `POST /api/login` - User login (returns JWT token)
+
+### Countries (All require JWT)
+* `GET /api/countries` - Get all countries (optional query: `?name=<search>&limit=<number>`)
+* `GET /api/countries/:id` - Get country by ID
+* `POST /api/countries` - Create new country
+* `PUT /api/countries/:id` - Update country
+* `DELETE /api/countries/:id` - Delete country
+* `GET /api/countries/stats` - Get statistics about countries (total, by continent, population stats)
+* `GET /api/countries/continents` - Get list of continents with country counts
+* `GET /api/countries/population/top` - Get top countries by population (query: `?limit=<number>`)
+* `GET /api/countries/recent` - Get recently created countries (query: `?limit=<number>`)
+* `GET /api/countries/by-continent/:continent` - Get countries by continent name
+
+## **Project Structure**
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/teivafr/country-project-api-isen.git
-git branch -M main
-git push -uf origin main
+.
+├── app.js                 # Main Express application
+├── package.json           # Backend dependencies
+├── src/
+│   ├── auth/
+│   │   ├── auth.js        # JWT authentication middleware
+│   │   └── private_key.js # JWT private key
+│   ├── db/
+│   │   ├── sequelize.js   # Sequelize configuration
+│   │   └── mock-country.js # Mock country data
+│   ├── models/
+│   │   ├── country.js     # Country model
+│   │   └── user.js        # User model
+│   └── routes/
+│       ├── findAllCountries.js
+│       ├── findCountryByPk.js
+│       ├── createCountry.js
+│       ├── updateCountry.js
+│       ├── deleteCountry.js
+│       └── login.js
+└── frontend/              # React frontend application
+    ├── package.json
+    ├── public/
+    │   └── index.html
+    └── src/
+        ├── components/
+        │   ├── Login.js
+        │   ├── Dashboard.js
+        │   ├── CountriesList.js
+        │   ├── SearchCountries.js
+        │   ├── CountryForm.js
+        │   └── CountryDetails.js
+        ├── services/
+        │   └── api.js     # API service layer
+        ├── App.js
+        └── index.js
 ```
 
-## Integrate with your tools
+## **Country Model**
 
-- [ ] [Set up project integrations](https://gitlab.com/teivafr/country-project-api-isen/-/settings/integrations)
+Each country has the following fields:
+* `id` - Auto-increment primary key
+* `name` - Country name (required, unique, 1-100 characters)
+* `capital` - Capital city (required, 1-100 characters)
+* `population` - Population number (required, integer, min: 0)
+* `flag` - Flag image URL (required, must be valid URL)
+* `continent` - Continent name (required, must be one of: Africa, Asia, Europe, North America, South America, Oceania, Antarctica)
+* `created` - Creation timestamp
 
-## Collaborate with your team
+## **Development**
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+### Backend Development
+The backend uses `nodemon` for auto-restart during development. The server will automatically restart when you make changes to the code.
 
-## Test and Deploy
+### Frontend Development
+The React app uses `react-scripts` for development. The development server includes hot-reload functionality.
 
-Use the built-in continuous integration in GitLab.
+## **Database Initialization**
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+The database is automatically initialized when the backend starts. It creates:
+* The `Country` table
+* The `User` table
+* 12 sample countries
+* A default user with username `teiva` and password `azerty`
 
-***
+**Note:** The database is reset (`force: true`) on each server start. Remove this in production!
 
-# Editing this README
+## **UI Features**
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+* Beautiful gradient backgrounds
+* Responsive card-based layouts
+* Smooth transitions and hover effects
+* Color-coded actions (edit, delete, view)
+* Modal-like detailed views
+* Form validation with error messages
 
-## Suggestions for a good README
+## **Author**
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+Teiva Francis — Full-Stack Developer
 
-## Name
-Choose a self-explaining name for your project.
+## **License**
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+ISC
